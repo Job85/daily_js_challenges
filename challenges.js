@@ -294,7 +294,16 @@ hammingDistance('abc', 'ab'); //=> NaN
 -----------------------------------------------------------------*/
 // Your solution for 12-hammingDistance here:
 function hammingDistance(str1, str2) {
-
+  if (str1.length !== str2.length) {
+    return NaN;
+  }
+  let dist = 0;
+  for (let i = 0; i < str1.length; i += 1) {
+    if (str1[i] !== str2[i]) {
+      dist += 1;
+    };
+  };
+  return dist;
 }
 /*-----------------------------------------------------------------
 Challenge: 13-mumble
@@ -352,7 +361,7 @@ mergeObjects({a: 1, b: 2, c: 3}, {d: 4}, {b: 22, d: 44});  //=> {a: 1, b: 22, c:
 -----------------------------------------------------------------*/
 // Your solution for 15-mergeObjects here:
 function mergeObjects(obj1, obj2) {
-  return merged = Object.assign(obj1, ...obj2)
+  return merged = Object.assign(targetObj, ...obj1, ...obj2);
 }
 /*-----------------------------------------------------------------
 Challenge: 16-findHighestPriced
