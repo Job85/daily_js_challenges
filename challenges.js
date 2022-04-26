@@ -476,11 +476,12 @@ reduceArray( ['Yes', 'No', 'Yes', 'Maybe'], function(acc, v) {
 -----------------------------------------------------------------*/
 // Your solution for 18-reduceArray here:
 function reduceArray(arr, acc, value) {
-  let accumulator = value
-  for (const val of arr) {
-    accumulator = acc(accumulator, val)
-  }
-  return accumulator
+  // let accumulator = value
+  // for (const val of arr) {
+  //   accumulator = acc(accumulator, val)
+  // }
+  // return accumulator
+
 }
 /*-----------------------------------------------------------------
 Challenge: 19-flatten
@@ -530,7 +531,12 @@ isPrime(29) //=> true
 isPrime(200) //=> false
 -----------------------------------------------------------------*/
 // Your solution for 20-isPrime here:
-function isPrime(n) { }
+function isPrime(n) {
+  if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false;
+  for (let i = 2, s = Math.sqrt(n); i <= s; i++)
+    if (n % i === 0) return false;
+  return n > 1;
+}
 /*-----------------------------------------------------------------
 Challenge: 21-primeFactors
 
