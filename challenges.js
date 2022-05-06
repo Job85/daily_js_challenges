@@ -369,9 +369,8 @@ mergeObjects({a: 1, b: 2, c: 3}, {d: 4});  //=> {a: 1, b: 2, c: 3, d: 4}
 mergeObjects({a: 1, b: 2, c: 3}, {d: 4}, {b: 22, d: 44});  //=> {a: 1, b: 22, c: 3, d: 44}
 -----------------------------------------------------------------*/
 // Your solution for 15-mergeObjects here:
-function mergeObjects(obj1, obj2) {
-  return Object.assign(obj1, obj2);
-  // return { ...obj1, ...obj2 }
+function mergeObjects(obj1, ...obj2) {
+  return Object.assign(obj1, ...obj2)
 }
 /*-----------------------------------------------------------------
 Challenge: 16-findHighestPriced
@@ -476,12 +475,11 @@ reduceArray( ['Yes', 'No', 'Yes', 'Maybe'], function(acc, v) {
 -----------------------------------------------------------------*/
 // Your solution for 18-reduceArray here:
 function reduceArray(arr, acc, value) {
-  // let accumulator = value
-  // for (const val of arr) {
-  //   accumulator = acc(accumulator, val)
-  // }
-  // return accumulator
-
+  let initValue = value
+  arr.forEach(function (element, index) {
+    initValue = acc(initValue, element, index)
+  })
+  return initValue
 }
 /*-----------------------------------------------------------------
 Challenge: 19-flatten
@@ -597,7 +595,15 @@ intersection(['a', 1], [true, 'a', 15]) //=> ['a']
 intersection([1, 'a', true, 1, 1], [true, 1, 'b', 1]) //=> [1, true, 1]
 -----------------------------------------------------------------*/
 // Your solution for 22-intersection here:
-function intersection(arr1, arr2) { }
+function intersection(arr1, arr2) {
+  let newArray = []
+  let _arr2 = [...arr2]
+  arr1.forEach((element) => {
+    let index = _arr2.indexOf(element)
+    if (index > -1) newArray.push(_a2.splice(index, 1)[0])
+  })
+  return newArray
+}
 /*-----------------------------------------------------------------
 Challenge: 23-balancedBrackets
 
@@ -619,7 +625,39 @@ balancedBrackets( '[(])' ) // => false
 balancedBrackets( '[({}[])]' ) // => true
 -----------------------------------------------------------------*/
 // Your solution for 23-balancedBrackets here:
-function balancedBrackets(string) { }
+function balancedBrackets(string) {
+  let stack = [];
+  for (let i = 0; i < string.length; i++) {
+    let x = string[i];
+    if (x == '(' || x == '[' || x == '{') {
+      stack.push(x);
+      continue;
+    }
+    if (stack.length == 0)
+      return false;
+
+    let check;
+    switch (x) {
+      case ')':
+        check = stack.pop();
+        if (check == '{' || check == '[')
+          return false;
+        break;
+      case '}':
+        check = stack.pop();
+        if (check == '(' || check == '[')
+          return false;
+        break;
+      case ']':
+        check = stack.pop();
+        if (check == '(' || check == '{')
+          return false;
+        break;
+    }
+
+  }
+  return (stack.length == 0);
+}
 /*-----------------------------------------------------------------
 Challenge: 24-isWinningTicket
 
@@ -645,7 +683,11 @@ isWinningTicket( [ ['ABC', 66], ['dddd', 100], ['Hello', 108] ] ) // => true
 isWinningTicket( [ ['ABC', 66], ['dddd', 15], ['Hello', 108] ] ) // => false
 -----------------------------------------------------------------*/
 // Your solution for 24-isWinningTicket here:
-function isWinningTicket(arr) { }
+function isWinningTicket(arr) {
+  return arr.every(function (x) {
+    return x[0].includes(String.fromCharCode(x[1]));
+  })
+}
 /*-----------------------------------------------------------------
 Challenge: 25-getNumForIP
 
@@ -671,7 +713,14 @@ getNumForIP( '192.156.99.15' ) // => 3231474447
 getNumForIP( '10.0.0.1' ) // => 167772161
 -----------------------------------------------------------------*/
 // Your solution for 25-getNumForIP here:
-function getNumForIP(bits) { }
+function getNumForIP(bits) {
+  let sect = bits.split('.').reverse()
+  let sum = 0
+  sect.forEach(function (sect, index) {
+    sum += parseInt(sect) * 256 ** index
+  })
+  return sum
+}
 /*-----------------------------------------------------------------
 Challenge: 26-toCamelCase
 
@@ -696,7 +745,11 @@ toCamelCase( 'Mama-mia' ) // => 'MamaMia'
 toCamelCase( 'A_b_c' ) // => 'ABC'
 -----------------------------------------------------------------*/
 // Your solution for 26-toCamelCase here:
-function toCamelCase(string) { }
+function toCamelCase(string) {
+  return string.replace(/[_-]\w/g, function (match) {
+    return match.charAt(1).toUpperCase();
+  })
+}
 /*-----------------------------------------------------------------
 Challenge: 27-countTheBits
 
@@ -722,7 +775,14 @@ countTheBits( 255 ) //=> 8
 countTheBits( 65535 )  //=> 16
 -----------------------------------------------------------------*/
 // Your solution for 27-countTheBits here:
-function countTheBits(n) { }
+function countTheBits(n) {
+  let count = 0
+  while (n) {
+    count += n & 1;
+    n >>= 1;
+  }
+  return count
+}
 /*-----------------------------------------------------------------
 Challenge: 28-gridTrip
 
